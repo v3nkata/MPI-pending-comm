@@ -20,10 +20,19 @@ scan -t mpirun -np 2 ./cancel_pattern_scorep
 Only partial output is produced i.e only trace files are produced but parallel trace analyzer that usually does the post processing of traces to identify wait-states, critical path etc. hangs without producing the final `trace.cubex` file.
 
 A sample output may look like this
-![output](images/output_1.png)
+
+![output](output_1.png)
+
 
 Since the trace files are produced, one might visualize them using Vampir. The timeline for this code is as shown below
-![timeline](images/trace_np_2.png)
+
+![timeline](trace_np_2.png)
+
 
 The observed behaviour of pending messages can be viewed as warnings in Vampir
-![warning](images/warning.png)
+
+![warning](warning.png)
+
+# Reason for pending messages
+`MPI_Cancel` is a local call and returns immediately, likely before the communication is actually cancelled, i.e the corresponding request could be still active. `MPI_Request_free` is encouraged to be used only on inactive requests. Also, no error code is returned back to the user in case one occurs. In the above code, these two calls are made one after the other which is causing a pending communication. Calling `MPI_Wait` after `MPI_Cancel` will resolve this problem. Consistent trace analysis is then possible.
+This pattern could occur anywhere and serves as a good case study in MPI Correctness.
