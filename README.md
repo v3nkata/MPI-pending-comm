@@ -41,3 +41,6 @@ This program was deliberately written to provoke pending communication, that dis
 ## Solution 
 Calling `MPI_Wait` after `MPI_Cancel` allows the operation to complete and will resolve this problem. Consistent trace analysis is then possible.
 This pattern could occur anywhere and serves as a good case study in MPI Correctness.
+
+## Suggestion
+To analyze MPI Correctness of your application which show problems with patterns similar to what was described here, one could use a tool like [MUST](https://www.i12.rwth-aachen.de/cms/i12/forschung/forschungsschwerpunkte/lehrstuhl-fuer-hochleistungsrechnen/~nrbe/must/)
