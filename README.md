@@ -36,7 +36,7 @@ The observed behaviour of pending messages can be viewed as warnings in Vampir
 ![warning](warning.png)
 
 ## Reason for pending messages
-This program was deliberately written to provoke pending communication, that disrupts performance tools. `MPI_Cancel` is a local call and returns immediately, likely before the communication is actually cancelled, i.e the corresponding request could be still **active**. `MPI_Request_free` is encouraged to be used only on **inactive** requests. Also, no error code is returned back to the user in case one occurs. In the above code, these two calls are made one after the other which is causing pending communication. 
+This program was deliberately written to provoke pending communication, that disrupts performance tools. `MPI_Cancel` is a local call and returns immediately, likely before the communication is actually cancelled, i.e the corresponding request could be still **active**. `MPI_Request_free` is encouraged to be used only on **inactive** requests. Also, no error code is returned back to the user in case one occurs. 
 
 ## Solution 
 Calling `MPI_Wait` after `MPI_Cancel` allows the operation to complete and will resolve this problem. Consistent trace analysis is then possible.
@@ -44,3 +44,6 @@ This pattern could occur anywhere and serves as a good case study in MPI Correct
 
 ## Suggestion
 To analyze MPI Correctness of your application which show problems with patterns similar to what was described here, one could use a tool like [MUST](https://www.i12.rwth-aachen.de/cms/i12/forschung/forschungsschwerpunkte/lehrstuhl-fuer-hochleistungsrechnen/~nrbe/must/)
+
+To demonstrate the tool's features when it comes across patterns explained above, below is an excerpt from the report produced by MUST on a production code
+![MUST](must_warning_active_recv.png)
