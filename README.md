@@ -15,7 +15,7 @@ works without errors.
 
 However, if you instrument the above code with Score-P and use Scalasca for post processing,
 ```
-scorep-gcc cancel_pattern.c -o cancel_pattern_scorep
+scorep-mpicc cancel_pattern.c -o cancel_pattern_scorep
 scan -t mpirun -np 2 ./cancel_pattern_scorep
 
 ```
