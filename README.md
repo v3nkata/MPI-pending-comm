@@ -7,7 +7,7 @@ Provoke MPI pending communication between processes. A case study in MPI correct
 
 Compiling and execute the above code without instrumentation. For instance,
 ```
-gcc cancel_pattern.c -o cancel_pattern
+mpicc cancel_pattern.c -o cancel_pattern
 mpirun -np 2 ./cancel_pattern
 
 ```
